@@ -5,7 +5,7 @@ import Dashboard from "./pages/Dashboard";
 
 
 function App() {
-  const [page, setPage] = useState("employees");
+  const [page, setPage] = useState("dashboard");
   const [mobileMenu, setMobileMenu] = useState(false);
 
 

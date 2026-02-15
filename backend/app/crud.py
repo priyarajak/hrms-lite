@@ -96,6 +96,7 @@ def get_attendance_by_employee(db: Session, employee_id: int):
 
 from datetime import date
 
+
 def get_dashboard_summary(db: Session, selected_date=None):
 
     total_employees = db.query(models.Employee).count()
@@ -103,21 +104,35 @@ def get_dashboard_summary(db: Session, selected_date=None):
     if not selected_date:
         selected_date = date.today()
 
-    attendance_records = db.query(models.Attendance).filter(
+    records = db.query(models.Attendance).filter(
         models.Attendance.date == selected_date
     ).all()
 
-    total_present = sum(
-        1 for record in attendance_records if record.status == "Present"
-    )
+    present_list = []
+    absent_list = []
 
-    total_absent = sum(
-        1 for record in attendance_records if record.status == "Absent"
-    )
+    for record in records:
+        emp = db.query(models.Employee).filter(
+            models.Employee.id == record.employee_id
+        ).first()
+
+        emp_data = {
+            "employee_id": emp.employee_id,
+            "full_name": emp.full_name,
+            "department": emp.department
+        }
+
+        if record.status == "Present":
+            present_list.append(emp_data)
+        else:
+            absent_list.append(emp_data)
 
     return {
-        "total_employees": total_employees,
         "date": selected_date,
-        "total_present": total_present,
-        "total_absent": total_absent
+        "total_employees": total_employees,
+        "total_present": len(present_list),
+        "total_absent": len(absent_list),
+        "present_employees": present_list,
+        "absent_employees": absent_list
     }
+

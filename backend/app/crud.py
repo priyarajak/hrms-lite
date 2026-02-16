@@ -94,9 +94,6 @@ def get_attendance_by_employee(db: Session, employee_id: int):
 
 
 
-from datetime import date
-
-
 def get_dashboard_summary(db: Session, selected_date=None):
 
     total_employees = db.query(models.Employee).count()

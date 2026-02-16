@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
-
 from .database import engine, Base
 from .routes.employee import router as employee_router
 from .routes.attendance import router as attendance_router
